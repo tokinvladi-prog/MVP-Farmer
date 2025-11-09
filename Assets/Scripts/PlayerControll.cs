@@ -8,6 +8,7 @@ public class PlayerControll : MonoBehaviour
     public InputActionAsset InputActions;
 
     private InputAction _moveAction;
+    private InputAction _interactAction;
 
     private Vector2 _moveAmt;
     private Vector2 _mouseAmt;
@@ -17,8 +18,6 @@ public class PlayerControll : MonoBehaviour
     private float _moveSpeed = 4f;
     [SerializeField]
     private float _rotationSpeed = 4f;
-    [SerializeField]
-    private LayerMask _groundLayer;
 
     private Camera _mainCamera;
 
@@ -38,14 +37,25 @@ public class PlayerControll : MonoBehaviour
         _mainCamera = Camera.main;
 
         _moveAction = InputSystem.actions.FindAction("Move");
+        _interactAction = InputSystem.actions.FindAction("Interact");
     }
 
     private void Update()
     {
+        Vector3 worldPosition = GetMousePosition();
         _moveAmt = _moveAction.ReadValue<Vector2>();
         _mouseAmt = Mouse.current.position.ReadValue();
 
-        Rotate();
+        Rotate(worldPosition);
+
+        if (_interactAction.WasPressedThisFrame())
+        {
+            FarmTile tile = GridManager.Instance.GetTile(worldPosition);
+            if (tile != null)
+            {
+                tile.Interact();
+            }
+        }
     }
     private void FixedUpdate()
     {
@@ -58,19 +68,27 @@ public class PlayerControll : MonoBehaviour
         _rb.MovePosition(_rb.position + _moveSpeed * Time.fixedDeltaTime * movement);
     }
 
-    private void Rotate()
+    private Vector3 GetMousePosition()
     {
+        Vector3 worldPosition = new();
+
         var groundPlane = new Plane(Vector3.up, Vector3.zero);
         Ray ray = _mainCamera.ScreenPointToRay(_mouseAmt);
 
-        if(groundPlane.Raycast(ray, out float position))
+        if (groundPlane.Raycast(ray, out float position))
         {
-            Vector3 worldPosition = ray.GetPoint(position);
-            Vector3 lookDirection = worldPosition - transform.position;
-            lookDirection.y = 0;
-
-            Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+            worldPosition = ray.GetPoint(position);
         }
+
+        return worldPosition;
+    }
+
+    private void Rotate(Vector3 worldPosition)
+    {
+        Vector3 lookDirection = worldPosition - transform.position;
+        lookDirection.y = 0;
+
+        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
     }
 }

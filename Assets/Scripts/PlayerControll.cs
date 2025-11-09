@@ -20,6 +20,8 @@ public class PlayerControll : MonoBehaviour
     [SerializeField]
     private LayerMask _groundLayer;
 
+    private Camera _mainCamera;
+
     private void OnEnable()
     {
         InputActions.FindActionMap("Player").Enable();
@@ -33,6 +35,7 @@ public class PlayerControll : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _mainCamera = Camera.main;
 
         _moveAction = InputSystem.actions.FindAction("Move");
     }
@@ -57,11 +60,13 @@ public class PlayerControll : MonoBehaviour
 
     private void Rotate()
     {
-        Ray ray = Camera.main.ScreenPointToRay(_mouseAmt);
+        var groundPlane = new Plane(Vector3.up, Vector3.zero);
+        Ray ray = _mainCamera.ScreenPointToRay(_mouseAmt);
 
-        if(Physics.Raycast(ray, out RaycastHit hit, 100f, _groundLayer))
+        if(groundPlane.Raycast(ray, out float position))
         {
-            Vector3 lookDirection = hit.point - transform.position;
+            Vector3 worldPosition = ray.GetPoint(position);
+            Vector3 lookDirection = worldPosition - transform.position;
             lookDirection.y = 0;
 
             Quaternion targetRotation = Quaternion.LookRotation(lookDirection);

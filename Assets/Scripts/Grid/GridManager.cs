@@ -8,7 +8,7 @@ public class GridManager : MonoBehaviour
     [SerializeField]
     private GameObject _tilePrefab;
 
-    private FarmTile[,] grid;
+    public FarmTile[,] Grid { get; private set; }
 
     public static GridManager Instance;
 
@@ -35,7 +35,7 @@ public class GridManager : MonoBehaviour
 
     private void CreateGrid()
     {
-        grid = new FarmTile[_gridSize.x, _gridSize.y];
+        Grid = new FarmTile[_gridSize.x, _gridSize.y];
 
         for (int x = 0; x < _gridSize.x; x++)
         {
@@ -44,7 +44,7 @@ public class GridManager : MonoBehaviour
                 Vector3 position = new(x, 0, y);
                 GameObject tile = Instantiate(_tilePrefab, position, Quaternion.identity);
 
-                grid[x, y] = tile.GetComponent<FarmTile>();
+                Grid[x, y] = tile.GetComponent<FarmTile>();
             }
         }
     }
@@ -56,7 +56,7 @@ public class GridManager : MonoBehaviour
 
         if (x >= 0 && x <= _gridSize.x && y >= 0 && y <= _gridSize.y)
         {
-            return grid[x, y];
+            return Grid[x, y];
         }
 
         return null;

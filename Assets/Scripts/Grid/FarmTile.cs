@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class FarmTile : MonoBehaviour
 {
+    public bool IsReady { get; private set; } = false;
+
     [SerializeField]
     private GameObject _plowed;
     [SerializeField]
@@ -46,10 +48,12 @@ public class FarmTile : MonoBehaviour
         StartCoroutine(Grow());
     }
 
-    private void Harvest()
+    public void Harvest()
     {
         _currentState = TileState.Plowed;
         _ready.SetActive(false);
+
+        IsReady = false;
     }
 
     private IEnumerator Grow()
@@ -59,5 +63,7 @@ public class FarmTile : MonoBehaviour
         _currentState = TileState.Ready;
         _planted.SetActive(false);
         _ready.SetActive(true);
+
+        IsReady = true;
     }
 }

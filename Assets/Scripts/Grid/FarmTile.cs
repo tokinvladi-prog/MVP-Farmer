@@ -35,7 +35,7 @@ public class FarmTile : MonoBehaviour
         }
     }
 
-    private void Plow()
+    public void Plow()
     {
         _currentState = TileState.Plowed;
         _plowed.SetActive(true);

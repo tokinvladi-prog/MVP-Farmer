@@ -5,4 +5,11 @@ public class Item : ScriptableObject
 {
     public string Name;
     public GameObject Prefab;
+    public ItemType Type;
+}
+
+public enum ItemType
+{
+    Tool,
+    Seed
 }

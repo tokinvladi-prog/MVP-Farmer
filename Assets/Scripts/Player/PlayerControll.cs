@@ -13,6 +13,7 @@ public class PlayerControll : MonoBehaviour
     private Vector2 _moveAmt;
     private Vector2 _mouseAmt;
     private Rigidbody _rb;
+    private Inventory _inventory;
 
     [SerializeField]
     private float _moveSpeed = 4f;
@@ -34,6 +35,7 @@ public class PlayerControll : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _inventory = GetComponent<Inventory>();
         _mainCamera = Camera.main;
 
         _moveAction = InputSystem.actions.FindAction("Move");
@@ -51,12 +53,35 @@ public class PlayerControll : MonoBehaviour
         if (_interactAction.WasPressedThisFrame())
         {
             FarmTile tile = GridManager.Instance.GetTile(worldPosition);
-            if (tile != null)
+            UseSelectedItem(tile);
+        }
+    }
+
+    private void UseSelectedItem(FarmTile tile)
+    {
+        Item currentItem = _inventory.GetSelectedItem();
+
+        if (currentItem == null) return;
+
+        switch (currentItem.Type)
+        {
+            case ItemType.Tool:
+                UseTool(tile, currentItem);
+                break;
+        }
+    }
+
+    private void UseTool(FarmTile tile, Item tool)
+    {
+        if (tile != null)
+        {
+            if (tool.Name == "Hoe")
             {
-                tile.Interact();
+                tile.Plow();
             }
         }
     }
+
     private void FixedUpdate()
     {
         Move();

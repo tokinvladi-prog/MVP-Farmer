@@ -57,4 +57,6 @@ public class Inventory : MonoBehaviour
             _currentItem = Instantiate(item.Prefab, _handTransform);
         }
     }
+
+    public Item GetSelectedItem() => _items[_selectedIndex];
 }

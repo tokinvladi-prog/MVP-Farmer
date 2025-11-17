@@ -26,9 +26,6 @@ public class FarmTile : MonoBehaviour
             case TileState.Empty:
                 Plow();
                 break;
-            case TileState.Plowed:
-                Plant();
-                break;
             case TileState.Ready:
                 Harvest();
                 break;
@@ -41,11 +38,14 @@ public class FarmTile : MonoBehaviour
         _plowed.SetActive(true);
     }
 
-    private void Plant()
+    public void Plant()
     {
-        _currentState = TileState.Planted;
-        _planted.SetActive(true);
-        StartCoroutine(Grow());
+        if (_currentState == TileState.Plowed)
+        {
+            _currentState = TileState.Planted;
+            _planted.SetActive(true);
+            StartCoroutine(Grow());
+        }
     }
 
     public void Harvest()

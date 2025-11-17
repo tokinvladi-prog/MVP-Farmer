@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e66ee69f7a655140aec6b75c622ed94, type: 3}
   m_Name: Hoe
   m_EditorClassIdentifier: Assembly-CSharp::Item
-  Name: Wooden Hoe
+  Name: Hoe
   Prefab: {fileID: 7965511266978695102, guid: 7c93774889826e54c9ba824633de4c0a, type: 3}
+  Type: 0

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e66ee69f7a655140aec6b75c622ed94, type: 3}
-  m_Name: Showel
+  m_Name: PumpkinSeed
   m_EditorClassIdentifier: Assembly-CSharp::Item
-  Name: Showel
-  Prefab: {fileID: 7965511266978695102, guid: c06cec8c6d6386f40a1d0ecd9fe44210, type: 3}
-  Type: 0
+  Name: Pumpkin Seed
+  Prefab: {fileID: 2389133815301678830, guid: 702299fb306169a429dd803d1475c665, type: 3}
+  Type: 1

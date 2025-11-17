@@ -68,6 +68,9 @@ public class PlayerControll : MonoBehaviour
             case ItemType.Tool:
                 UseTool(tile, currentItem);
                 break;
+            case ItemType.Seed:
+                UseSeed(tile, currentItem);
+                break;
         }
     }
 
@@ -77,7 +80,18 @@ public class PlayerControll : MonoBehaviour
         {
             if (tool.Name == "Hoe")
             {
-                tile.Plow();
+                tile.Interact();
+            }
+        }
+    }
+
+    private void UseSeed(FarmTile tile, Item seed)
+    {
+        if (tile != null)
+        {
+            if(seed.Name == "Pumpkin Seed")
+            {
+                tile.Plant();
             }
         }
     }
